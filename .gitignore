@@ -3,7 +3,7 @@ package-lock.json
 
 .vscode/
 
-test-examples/
+tests-examples/
 /test-results/
 /playwright-report/
 /blob-report/
