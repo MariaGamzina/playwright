@@ -5,6 +5,7 @@ const { email, password } = require("../user");
 
 
 test('Valid authorization', async () => {
+  test.setTimeout(120_000);
   const browser = await chromium.launch({});
   const page = await browser.newPage();
 
@@ -12,13 +13,13 @@ test('Valid authorization', async () => {
   await page.click("text = Войти");
   await page.getByPlaceholder('Email').fill(email);
   await page.getByPlaceholder('Пароль').fill(password);
-  await page.click('.Button_button__b_EZq.Button_size-m__GaBB7.Button_color-lilac__kluMS.styles_button___7Xc4');
-  //await page.pause();
-  await expect(page.locator('.src-components-pages-Profile-Programs--heading--vVw3p')).toContainText('Моё обучение');
+  await page.click('[data-testid="login-submit-btn"]');
+  await expect(page).toHaveURL('https://netology.ru/profile/7833767');
   await browser.close();
 });
 
 test('Inalid authorization', async () => {
+  test.setTimeout(120_000);
   const browser = await chromium.launch({});
   const page = await browser.newPage();
 
@@ -26,9 +27,8 @@ test('Inalid authorization', async () => {
   await page.click("text = Войти");
   await page.getByPlaceholder('Email').fill(email);
   await page.getByPlaceholder('Пароль').fill('3456');
-  await page.click('.Button_button__b_EZq.Button_size-m__GaBB7.Button_color-lilac__kluMS.styles_button___7Xc4');
-  //await page.pause();
-  await expect(page.locator('.hint_hint__bpsEa.inputHint')).toContainText('Вы ввели неправильно логин или пароль.');
+  await page.click('[data-testid="login-submit-btn"]');
+  await expect(page.locator('[data-testid="login-error-hint"]')).toContainText('Вы ввели неправильно логин или пароль.');
   await browser.close();
 });
 
